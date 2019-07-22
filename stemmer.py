@@ -93,10 +93,7 @@ class Stemmer:
                 return True
         return False
 
-    def stem(self, word):
-        m = self.measure(word)
-
-        # step 1a
+    def step_1a(self, word, m):
         if word.endswith('sses'):
             word = self.__replace(word, 'sses', 'ss')
         elif word.endswith('ies'):
@@ -106,7 +103,9 @@ class Stemmer:
         elif word.endswith('s'):
             word = self.__replace(word, 's', '')
 
-        # step 1b
+        return word
+
+    def step_1b(self, word, m):
         restore_e = False
         if word.endswith('eed') and m > 0:
             word = self.__replace(word, 'eed', 'ee')
@@ -129,11 +128,15 @@ class Stemmer:
             elif m == 1 and self.__o_star(word, ''):
                 word = word + 'e'
 
-        # step 1c
+        return word
+
+    def step_1c(self, word, m):
         if word.endswith('y') and self.__v_star(word, 'y'):
             word = self.__replace(word, 'y', 'i')
 
-        # step 2
+        return word
+
+    def step_2(self, word, m):
         if word.endswith('ational') and m > 0:
             word = self.__replace(word, 'ational', 'ate')
         elif word.endswith('tional') and m > 0:
@@ -175,7 +178,9 @@ class Stemmer:
         elif word.endswith('biliti') and m > 0:
             word = self.__replace(word, 'biliti', 'ble')
 
-        # step 3
+        return word
+
+    def step_3(self, word, m):
         if word.endswith('icate') and m > 0:
             word = self.__replace(word, 'icate', 'ic')
         elif word.endswith('ative') and m > 0:
@@ -191,7 +196,9 @@ class Stemmer:
         elif word.endswith('ness') and m > 0:
             word = self.__replace(word, 'ness', '')
 
-        # step 4
+        return word
+
+    def step_4(self, word, m):
         if word.endswith('al') and m > 1:
             word = self.__replace(word, 'al', '')
         elif word.endswith('ance') and m > 1:
@@ -232,14 +239,32 @@ class Stemmer:
         elif word.endswith('ize') and m > 1:
             word = self.__replace(word, 'ize', '')
 
-        # step 5a
+        return word
+
+    def step_5a(self, word, m):
         if word.endswith('e') and m > 1:
             word = self.__replace(word, 'e', '')
         elif word.endswith('e') and m == 1 and not self.__o_star(word, 'e'):
             word = self.__replace(word, 'e', '')
 
-        # step 5b
+        return word
+
+    def step_5b(self, word, m):
         if m > 1 and self.__d_star(word, '') and word.endswith('l'):
             word = word[ : len(word) - 1]
+
+        return word
+
+    def stem(self, word):
+        m = self.measure(word)
+
+        word = self.step_1a(word, m)
+        word = self.step_1b(word, m)
+        word = self.step_1c(word, m)
+        word = self.step_2(word, m)
+        word = self.step_3(word, m)
+        word = self.step_4(word, m)
+        word = self.step_5a(word, m)
+        word = self.step_5b(word, m)
 
         return word
