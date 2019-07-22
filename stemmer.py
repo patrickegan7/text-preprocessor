@@ -8,10 +8,53 @@ class Stemmer:
         # not including 'y' because it is sometimes one or the other
 
     # breaks word into the format [C](VC)^m[V]
-    def atomize(self): # TODO: implement
+    def measure(self, word): # TODO: implement
         m = 0
-        head = 0
-        tail = 0
+        if len(word) <= 1:
+            return m
+
+        # handle when y is the starting letter
+        start_core = 0
+        if word[start_core] == 'y':
+            start_core = 1
+
+        # find the index where the (VC)^m starts
+        in_prefix = True
+        while in_prefix:
+            if start_core < len(word) and word[start_core] in self.consonants:
+                start_core += 1
+            else:
+                in_prefix = False
+
+        # if y is the last letter determine if it is a vowel or a consonant
+        end_core = len(word) - 1
+        if word[end_core] == 'y' and word[end_core - 1] in self.consonants:
+            end_core -= 1
+
+        # find the index where the (VC)^m ends
+        in_suffix = True
+        while in_suffix:
+            if end_core > -1 and word[end_core] in self.vowels:
+                end_core -= 1
+            else:
+                in_suffix = False
+
+        # m = 0
+        if end_core < start_core:
+            return m
+
+        # find the value of m
+        core = word[start_core : end_core + 1]
+        idx = 0
+        while idx < len(core):
+            if core[idx] in self.consonants:
+                m += 1
+                idx += 1
+                while idx < len(core) and core[idx] in self.consonants:
+                    idx += 1
+            else:
+                idx += 1
+
         return m
 
     def __replace(self, word, suffix, replacement):
@@ -51,7 +94,7 @@ class Stemmer:
         return False
 
     def stem(self, word):
-        m = self.atomize(word)
+        m = self.measure(word)
 
         # step 1a
         if word.endswith('sses'):
@@ -69,7 +112,7 @@ class Stemmer:
             word = self.__replace(word, 'eed', 'ee')
         elif word.endswith('ed') and self.__v_star(word, 'ed'):
             word = self.__replace(word, 'ed', '')
-            restore_e = True # TODO: rename this variable
+            restore_e = True
         elif word.endswith('ing') and self.__v_star(word, 'ing'):
             word = self.__replace(word, 'ing', '')
             restore_e = True
