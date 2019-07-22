@@ -1,6 +1,9 @@
 # Implementation of the Porter Stemmer algorithm defined at:
 # https://tartarus.org/martin/PorterStemmer/def.txt
 
+
+# TODO: need to make all the conditions only apply to the stem, including conditions on a word's measure
+
 class Stemmer:
     def __init__(self):
         self.vowels = {'a', 'e', 'i', 'o', 'u'}
@@ -62,7 +65,7 @@ class Stemmer:
 
     # checks if the stem of word contains a vowel
     def __v_star(self, word, suffix):
-        stem = word[ : len(word) - len(suffx)]
+        stem = word[ : len(word) - len(suffix)]
 
         # handle case where 'y' is a vowel
         if 'y' in stem:
@@ -78,17 +81,17 @@ class Stemmer:
 
     # checks if the stem ends with a double consonant
     def __d_star(self, word, suffix):
-        stem = word[ : len(word) - len(suffx)]
+        stem = word[ : len(word) - len(suffix)]
 
-        if len(stem > 1):
+        if len(stem) > 1:
             return stem[len(stem) - 1] in self.consonants and stem[len(stem) - 1] == stem[len(stem) - 2]
         return False
 
     # checks if the stem ends in cvc
     def __o_star(self, word, suffix):
-        stem = word[ : len(word) - len(suffx)]
+        stem = word[ : len(word) - len(suffix)]
 
-        if len(stem >= 3):
+        if len(stem) >= 3:
             if stem[len(stem) - 3] in self.consonants and (stem[len(stem) - 2] in self.vowels or  stem[len(stem) - 2] == 'y') and stem[len(stem) - 1] in self.consonants:
                 return True
         return False

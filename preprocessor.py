@@ -10,6 +10,7 @@ class Preprocessor:
         contraction_expansion_flag = False
         stop_word_flag = False
         noise_removal_flag = False
+        stemmer_flag = False
 
         for arg in sys.argv:
             if arg == "-cxp":
@@ -23,3 +24,7 @@ class Preprocessor:
             elif arg = "-nr":
                 noise_removal_flag = True
                 self.noise_remover = NoiseRemover()
+
+            elif arg = "-stem":
+                stemmer_flag = True
+                self.stemmer = Stemmer()
