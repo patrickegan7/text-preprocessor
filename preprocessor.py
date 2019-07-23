@@ -1,6 +1,7 @@
 from contraction_expander import ContractionExpander
 from stop_word_remover import StopWordRemover
 from noise_remover import NoiseRemover
+from stemmer import Stemmer
 from pathlib import Path
 
 class Preprocessor:
@@ -12,19 +13,33 @@ class Preprocessor:
         noise_removal_flag = False
         stemmer_flag = False
 
-        for arg in sys.argv:
-            if arg == "-cxp":
-                contraction_expansion_flag = True
-                self.contraction_expander = ContractionExpander()
+        if len(sys.argv) == 0:
+            contraction_expansion_flag = True
+            self.contraction_expander = ContractionExpander()
 
-            elif arg == "-swr":
-                stop_word_flag = True
-                self.stop_word_remover = StopWordRemover()
+            stop_word_flag = True
+            self.stop_word_remover = StopWordRemover()
 
-            elif arg = "-nr":
-                noise_removal_flag = True
-                self.noise_remover = NoiseRemover()
+            noise_removal_flag = True
+            self.noise_remover = NoiseRemover()
 
-            elif arg = "-stem":
-                stemmer_flag = True
-                self.stemmer = Stemmer()
+            stemmer_flag = True
+            self.stemmer = Stemmer()
+
+        else:
+            for arg in sys.argv:
+                if arg == "-cxp":
+                    contraction_expansion_flag = True
+                    self.contraction_expander = ContractionExpander()
+
+                elif arg == "-swr":
+                    stop_word_flag = True
+                    self.stop_word_remover = StopWordRemover()
+
+                elif arg = "-nr":
+                    noise_removal_flag = True
+                    self.noise_remover = NoiseRemover()
+
+                elif arg = "-stem":
+                    stemmer_flag = True
+                    self.stemmer = Stemmer()
