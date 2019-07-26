@@ -2,11 +2,18 @@ class ContractionExpander:
     def __init__(self):
         self.contractions = self.__create_contractions()
 
-    def expand(self, contraction):
+    def expand_word(self, contraction):
         if not (contraction in self.contractions):
-            return ""
+            return contraction
         else:
             return self.contractions[contraction]
+
+    def expand_text(self, text):
+        expanded = ''
+        for word in text:
+            expanded += self.expand_word(word)
+
+        return expanded
 
     def add_contraction(self, contraction_expansion):
         self.contractions.update(contraction_expansion)
