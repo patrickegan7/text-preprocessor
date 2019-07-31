@@ -2,14 +2,13 @@ from string import punctuation
 
 
 class NoiseRemover:
-    def __init__(self, document):
-        self.doc = document
+    def __init__(self):
         self.exceptions = {"ph.d.", "u.s.a.", "u.k."} # TODO: need to fill this out
         self.exceptions = self.__add_contractions_to_exceptions()
         self.noise = set(punctuation)
 
-    def remove_noise(self):
-        contents = self.doc.split()
+    def remove_noise(self, document):
+        contents = document.split()
 
         for word in contents:
             if not word in self.exceptions:
