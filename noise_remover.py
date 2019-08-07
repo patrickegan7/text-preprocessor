@@ -10,11 +10,11 @@ class NoiseRemover:
     def remove_noise(self, document):
         contents = document.split()
 
-        for word in contents:
+        for idx, word in enumerate(contents):
             if not word in self.exceptions:
                 for char in word:
                     if char in self.noise:
-                        word = word.replace(char, "")
+                        contents[idx] = word.replace(char, "")
 
         # reassemble string array into one string
         new_contents = ""

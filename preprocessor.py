@@ -62,9 +62,6 @@ class Preprocessor:
                 new_file.write(content)
                 new_file.close()
 
-                #shutil.move(str(new_file), str(processed_path) + str(new_file))
-
-
     # takes in the folder for corpus
     def set_path(self, corpus):
         if corpus == None:
