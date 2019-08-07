@@ -17,6 +17,15 @@ class StopWordRemover:
         if isinstance(word, str):
             self.stop_words.discard(word)
 
+    def remove_stop_words(self, text):
+        content = text.split()
+        new_content = ""
+        for word in content:
+            if not self.is_stop_word(word):
+                new_content += word + " "
+
+        return new_content.strip()
+
 
     # Created to have list at the end of the file
     def __create_stop_words(self):

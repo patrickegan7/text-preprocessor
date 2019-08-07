@@ -16,7 +16,12 @@ class NoiseRemover:
                     if char in self.noise:
                         word = word.replace(char, "")
 
-        return contents
+        # reassemble string array into one string
+        new_contents = ""
+        for word in contents:
+            new_contents += word + " "
+
+        return new_contents.strip()
 
     def push_noise(self, noise):
         if isinstance(noise, str):

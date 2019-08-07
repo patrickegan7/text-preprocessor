@@ -11,7 +11,7 @@ class Stemmer:
         # not including 'y' because it is sometimes one or the other
 
     # breaks word into the format [C](VC)^m[V]
-    def measure(self, word): # TODO: implement
+    def measure(self, word):
         m = 0
         if len(word) <= 1:
             return m
@@ -326,3 +326,12 @@ class Stemmer:
         word = self.step_5b(word, m)
 
         return word
+
+    def stem_text(self, text):
+        content = text.split()
+        new_content = ""
+
+        for word in content:
+            new_content += self.stem(word) + " "
+
+        return new_content.strip()

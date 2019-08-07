@@ -9,11 +9,12 @@ class ContractionExpander:
             return self.contractions[contraction]
 
     def expand_text(self, text):
+        content = text.split()
         expanded = ''
-        for word in text:
-            expanded += self.expand_word(word)
+        for word in content:
+            expanded += self.expand_word(word) + " "
 
-        return expanded
+        return expanded.strip()
 
     def add_contraction(self, contraction_expansion):
         self.contractions.update(contraction_expansion)

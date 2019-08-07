@@ -50,28 +50,14 @@ class Preprocessor:
 
                 if self.contraction_expansion_flag:
                     content = self.contraction_expander.expand_text(content)
-
                 new_content = ''
 
-                # TODO: fix this mess
-                if self.stop_word_flag and self.stemmer_flag:
-                    for word in content:
-                        if not self.stop_word_remover.is_stop_word(word):
-                            new_content += self.stemmer.stem(word)
-                    content = new_content
+                if self.stop_word_flag:
+                    content = self.stop_word_remover.remove_stop_words(content)
 
-                elif self.stop_word_flag:
-                    for word in content:
-                        if not self.stop_word_remover.is_stop_word(word):
-                            new_content += word
-                    content = new_content
+                if self.stemmer_flag:
+                    content = self.stemmer.stem_text(content)
 
-                elif self.stemmer_flag:
-                    for word in content:
-                        new_content += self.stemmer.stem(word)
-                    content = new_content
-
-                processed_path
                 new_file = open("processed\\" + path.basename(f.name), 'w')
                 new_file.write(content)
                 new_file.close()
